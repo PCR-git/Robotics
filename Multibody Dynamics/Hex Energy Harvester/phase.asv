@@ -1,0 +1,27 @@
+
+clc
+
+syms Amp P A w t phi gamma D d ...
+     phi1 phi2 phi3 phi1p phi2p phi3p f2 f5 f8 ...
+
+u1b = Amp*(P*((A*sin(w*t+phi))+gamma-(phi2-phi1))+D*w*(A*cos(w*t+phi)-(phi2p-phi1p)));
+u2b = Amp*(P*((A*sin(w*t+phi-d))+gamma-(phi3-phi2))+D*w*(A*cos(w*t+phi-d)-(phi3p-phi2p)));
+
+%y1pp = - cos(phi2)*phi2p^2 + f2/3 + f5/3 + f8/3 - (2*phi1p^2*cos(phi1))/3 - (phi3p^2*cos(phi3))/3 + (u1b*sin(phi1))/3 - (u1b*sin(phi2))/2 + (u2b*sin(phi2))/2 - (u2b*sin(phi3))/6;
+%y2pp = (cos(phi1)*phi1p^2)/3 + f2/3 + f5/3 + f8/3 - (phi3p^2*cos(phi3))/3 - (u1b*sin(phi1))/6 - (u2b*sin(phi3))/6;
+%y3pp = (cos(phi1)*phi1p^2)/3 + cos(phi2)*phi2p^2 + (2*cos(phi3)*phi3p^2)/3 + f2/3 + f5/3 + f8/3 - (u1b*sin(phi1))/6 + (u1b*sin(phi2))/2 - (u2b*sin(phi2))/2 + (u2b*sin(phi3))/3;
+
+%y1pp = f2/3 + f5/3 + f8/3 - (2*phi1p^2*cos(phi1))/3 - phi2p^2*cos(phi2) - (phi3p^2*cos(phi3))/3 + (Amp*sin(phi2)*(P*(gamma + phi2 - phi3 - A*sin(d - phi - t*w)) + D*w*(phi2p - phi3p + A*cos(d - phi - t*w))))/2 - (Amp*sin(phi3)*(P*(gamma + phi2 - phi3 - A*sin(d - phi - t*w)) + D*w*(phi2p - phi3p + A*cos(d - phi - t*w))))/6 + (Amp*sin(phi1)*(P*(gamma + phi1 - phi2 + A*sin(phi + t*w)) + D*w*(phi1p - phi2p + A*cos(phi + t*w))))/3 - (Amp*sin(phi2)*(P*(gamma + phi1 - phi2 + A*sin(phi + t*w)) + D*w*(phi1p - phi2p + A*cos(phi + t*w))))/2;
+y2pp = f2/3 + f5/3 + f8/3 + (phi1p^2*cos(phi1))/3 - (phi3p^2*cos(phi3))/3 - (Amp*sin(phi3)*(P*(gamma + phi2 - phi3 - A*sin(d - phi - t*w)) + D*w*(phi2p - phi3p + A*cos(d - phi - t*w))))/6 - (Amp*sin(phi1)*(P*(gamma + phi1 - phi2 + A*sin(phi + t*w)) + D*w*(phi1p - phi2p + A*cos(phi + t*w))))/6;
+%y3pp = f2/3 + f5/3 + f8/3 + (phi1p^2*cos(phi1))/3 + phi2p^2*cos(phi2) + (2*phi3p^2*cos(phi3))/3 - (Amp*sin(phi2)*(P*(gamma + phi2 - phi3 - A*sin(d - phi - t*w)) + D*w*(phi2p - phi3p + A*cos(d - phi - t*w))))/2 + (Amp*sin(phi3)*(P*(gamma + phi2 - phi3 - A*sin(d - phi - t*w)) + D*w*(phi2p - phi3p + A*cos(d - phi - t*w))))/3 - (Amp*sin(phi1)*(P*(gamma + phi1 - phi2 + A*sin(phi + t*w)) + D*w*(phi1p - phi2p + A*cos(phi + t*w))))/6 + (Amp*sin(phi2)*(P*(gamma + phi1 - phi2 + A*sin(phi + t*w)) + D*w*(phi1p - phi2p + A*cos(phi + t*w))))/2;
+
+%Vel = int(y2pp, t);
+%Vel = (t*cos(phi1)*phi1p^2)/3 - (Amp*D*t*w*sin(phi1)*phi1p)/6 + (f2*t)/3 + (f5*t)/3 + (f8*t)/3 - (phi3p^2*t*cos(phi3))/3 + (A*Amp*D*sin(d - phi - t*w)*sin(phi3))/6 - (A*Amp*D*sin(phi + t*w)*sin(phi1))/6 - (Amp*P*gamma*t*sin(phi1))/6 - (Amp*P*gamma*t*sin(phi3))/6 - (Amp*P*phi1*t*sin(phi1))/6 + (Amp*P*phi2*t*sin(phi1))/6 - (Amp*P*phi2*t*sin(phi3))/6 + (Amp*P*phi3*t*sin(phi3))/6 + (Amp*D*phi2p*t*w*sin(phi1))/6 - (Amp*D*phi2p*t*w*sin(phi3))/6 + (Amp*D*phi3p*t*w*sin(phi3))/6 + (A*Amp*P*cos(d - phi - t*w)*sin(phi3))/(6*w) + (A*Amp*P*cos(phi + t*w)*sin(phi1))/(6*w);
+
+%Pos = int(Vel,t);
+Pos = (t^2*(f2*w + f5*w + f8*w + phi1p^2*w*cos(phi1) - phi3p^2*w*cos(phi3) - (Amp*D*phi1p*w^2*sin(phi1))/2 + (Amp*D*phi2p*w^2*sin(phi1))/2 - (Amp*D*phi2p*w^2*sin(phi3))/2 + (Amp*D*phi3p*w^2*sin(phi3))/2 - (Amp*P*gamma*w*sin(phi1))/2 - (Amp*P*gamma*w*sin(phi3))/2 - (Amp*P*phi1*w*sin(phi1))/2 + (Amp*P*phi2*w*sin(phi1))/2 - (Amp*P*phi2*w*sin(phi3))/2 + (Amp*P*phi3*w*sin(phi3))/2))/(6*w) + (A*Amp*D*cos(d - phi - t*w)*sin(phi3))/(6*w) - (A*Amp*P*sin(d - phi - t*w)*sin(phi3))/(6*w^2) + (A*Amp*D*cos(phi + t*w)*sin(phi1))/(6*w) + (A*Amp*P*sin(phi + t*w)*sin(phi1))/(6*w^2);
+
+T = (2*pi)/w;
+Vavg = subs(Pos,t,T)/T
+
+(w*((2*pi^2*(f2*w + f5*w + f8*w + phi1p^2*w*cos(phi1) - phi3p^2*w*cos(phi3) - (Amp*D*phi1p*w^2*sin(phi1))/2 + (Amp*D*phi2p*w^2*sin(phi1))/2 - (Amp*D*phi2p*w^2*sin(phi3))/2 + (Amp*D*phi3p*w^2*sin(phi3))/2 - (Amp*P*gamma*w*sin(phi1))/2 - (Amp*P*gamma*w*sin(phi3))/2 - (Amp*P*phi1*w*sin(phi1))/2 + (Amp*P*phi2*w*sin(phi1))/2 - (Amp*P*phi2*w*sin(phi3))/2 + (Amp*P*phi3*w*sin(phi3))/2))/(3*w^3) + (A*Amp*D*cos(phi)*sin(phi1))/(6*w) + (A*Amp*P*sin(phi)*sin(phi1))/(6*w^2) + (A*Amp*D*sin(phi3)*cos(d - phi))/(6*w) - (A*Amp*P*sin(d - phi)*sin(phi3))/(6*w^2)))/(2*pi)
